@@ -1,1 +1,13 @@
 In this repo I briefly outline some locale-related problems with Python 3.
+
+You can use the following steps to run the test/showcase:
+
+$ python2.5 setup.py build
+$ python3.0 setup.py build
+
+To run the tests with python 2.5, enter:
+$ (cd build/lib*-2.5; python2.5 py3k_locale_problem.py)
+... for 3.0  ... 
+$ (cd build/lib*-3.0; python3.0 py3k_locale_problem.py)
+
+When manually setting LC_ALL=C to the differences disappear
