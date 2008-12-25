@@ -10,4 +10,4 @@ $ (cd build/lib*-2.5; python2.5 py3k_locale_problem.py)
 ... for 3.0  ... 
 $ (cd build/lib*-3.0; python3.0 py3k_locale_problem.py)
 
-When manually setting LC_ALL=C to the differences disappear
+When manually setting LC_ALL=C, the differences disappear
