@@ -1,6 +1,46 @@
-In this repo I briefly outline some locale-related problems with Python 3.
+Hi 
 
-You can use the following steps to run the test/showcase:
+While helping Brandon Rhodes to port PyEphem[1] to Python 3 we struggled over a
+strange locale-related problem on OS X. PyEphem is a library which can do
+astronomical computations like tracking the position of stars, planets and
+earth satellites relative to the earth's position. When testing out the Python
+3 release of PyEphem I noticed that on my OS X laptop a lot of calculations
+were wrong (not completely wrong, but clearly not accurate) compared to Python
+2.5. We (well mostly Brandon) were able to track down the problem to the TLE
+parser (TLE are data file containing the orbital elements of an object) which
+appears to read most values wrong with python 3. In fact it cut of the decimal
+parts of all floats (1.123232 got 1, etc). Manually setting LANG and LC_ALL to
+C solved the problem. 
+
+It turns out that some parts of Python 3 got more locale dependent on some
+platforms. The only platform I am aware of is OS X, on Linux Python 3 appears
+to behave like Python 2.x did. 
+
+In case of PyEphem the problem was in the C extension which got more locale
+dependent, for example atof() or scanf() with Python 3 now expected the german
+decimal-delimiter ',' instead of the '.' in floats (3.14 vs. 3,14). On the
+other hand the constructor of float still expects '.' all the time. But the
+built-in function strptime() honors locales with Python 3 and expects german
+week day.
+
+I've written a simple script and a simple C extension which illustrates the
+problem. Both the extension and the script run python 2.x and python 3, so you
+can easily compare the result while executing the script in different
+environments.
+
+I was only able to reproduce the problem on OS X (10.5) and using a german
+locale like "de_CH.UTF-8". When manually setting LC_ALL=C, the differences
+disappears. 
+
+I can't imagine that his behavior was really intended, and I hope the test case
+helps you guys to identify/fix this problem.
+
+Download the test case from: 
+ http://github.com/retoo/py3k-locale-problem/tarball/master
+or get it using git:
+ git://github.com/retoo/py3k-locale-problem.git
+
+You can use the following steps to build it:
 
 $ python2.5 setup.py build
 $ python3.0 setup.py build
@@ -10,4 +50,9 @@ $ (cd build/lib*-2.5; python2.5 py3k_locale_problem.py)
 ... for 3.0  ... 
 $ (cd build/lib*-3.0; python3.0 py3k_locale_problem.py)
 
-When manually setting LC_ALL=C, the differences disappear
+In the file 'results.txt' you can see the output from my OS X system. 
+
+Cheers,
+Reto Schüttel
+
+[1] http://rhodesmill.org/pyephem/
