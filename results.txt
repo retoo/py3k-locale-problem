@@ -1,4 +1,4 @@
-= Python 2.5.1 =
+===== Python 2.5.1 =====
 
 2.5.1 (r251:54863, Jan 17 2008, 19:35:17) 
 [GCC 4.0.1 (Apple Inc. build 5465)]
@@ -6,6 +6,12 @@ LANG: de_CH.UTF-8
 
 
   == strptime test ==
+
+  When parsing date with strptime() Python usually ignores the locale and
+  just assumes LANG=C.
+
+  This test tries to parse the weekday 'Monday' and 'Montag'. With Python 3
+  on OS X and a german locale only 'Montag' can be parsed.
   
 Parsing 'Montag'. Result: Unable to detect (Value Error)
 Parsing 'Monday'. Result: (1900, 1, 1, 0, 0, 0, 0, 1, -1)
@@ -13,33 +19,59 @@ Parsing 'Monday'. Result: (1900, 1, 1, 0, 0, 0, 0, 1, -1)
 
   ==float() test ==
 
+  Float's contstructor is pretty locale indepdendent, it will recognize 1.7 as
+  a number regardless the version of Python or the plattform.
+
+  
 1.7: 1.7
 1,7: Unable to detect (Value Error)
 
 
   == atof() test (using a C extension) =="
+
+  In this test the libc function atof() is being used to convert the string to
+  a float. In Python 2.5 the C extension's atof appears to ignore the LOCALE
+  and always expects a '.' as the decimal delimiter. With Python 3.0 on
+  a OS X box with german locales the atof epxects the german delimiter ','.
   
 1.7: 1.70000004768
 1,7: 1.0
 
-= Python 3.0 =
+===== Python 3.0 =====
 
 3.0 (r30:67503, Dec  6 2008, 14:32:13) 
 [GCC 4.0.1 (Apple Inc. build 5465)]
 LANG: de_CH.UTF-8
 
+
   == strptime test ==
 
+  When parsing date with strptime() Python usually ignores the locale and
+  just assumes LANG=C.
+
+  This test tries to parse the weekday 'Monday' and 'Montag'. With Python 3
+  on OS X and a german locale only 'Montag' can be parsed.
+  
 Parsing 'Montag'. Result: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
 Parsing 'Monday'. Result: Unable to detect (Value Error)
 
+
   ==float() test ==
+
+  Float's contstructor is pretty locale indepdendent, it will recognize 1.7 as
+  a number regardless the version of Python or the plattform.
+
   
 1.7: 1.7
 1,7: Unable to detect (Value Error)
 
 
   == atof() test (using a C extension) =="
+
+  In this test the libc function atof() is being used to convert the string to
+  a float. In Python 2.5 the C extension's atof appears to ignore the LOCALE
+  and always expects a '.' as the decimal delimiter. With Python 3.0 on
+  a OS X box with german locales the atof epxects the german delimiter ','.
   
 1.7: 1.0
 1,7: 1.70000004768
