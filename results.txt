@@ -1,0 +1,45 @@
+= Python 2.5.1 =
+
+2.5.1 (r251:54863, Jan 17 2008, 19:35:17) 
+[GCC 4.0.1 (Apple Inc. build 5465)]
+LANG: de_CH.UTF-8
+
+
+  == strptime test ==
+  
+Parsing 'Montag'. Result: Unable to detect (Value Error)
+Parsing 'Monday'. Result: (1900, 1, 1, 0, 0, 0, 0, 1, -1)
+
+
+  ==float() test ==
+
+1.7: 1.7
+1,7: Unable to detect (Value Error)
+
+
+  == atof() test (using a C extension) =="
+  
+1.7: 1.70000004768
+1,7: 1.0
+
+= Python 3.0 =
+
+3.0 (r30:67503, Dec  6 2008, 14:32:13) 
+[GCC 4.0.1 (Apple Inc. build 5465)]
+LANG: de_CH.UTF-8
+
+  == strptime test ==
+
+Parsing 'Montag'. Result: time.struct_time(tm_year=1900, tm_mon=1, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=0, tm_yday=1, tm_isdst=-1)
+Parsing 'Monday'. Result: Unable to detect (Value Error)
+
+  ==float() test ==
+  
+1.7: 1.7
+1,7: Unable to detect (Value Error)
+
+
+  == atof() test (using a C extension) =="
+  
+1.7: 1.0
+1,7: 1.70000004768
