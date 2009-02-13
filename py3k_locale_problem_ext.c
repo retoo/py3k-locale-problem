@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <locale.h>
 
 struct module_state {
 	PyObject *error;
@@ -20,6 +21,9 @@ py3k_locale_problem_ext_convert(PyObject *self, PyObject *args) {
 	const char *input;
 	float f;
 
+  char *c = setlocale(LC_ALL, NULL);
+  printf("%s\n", c);
+
 	if (!PyArg_ParseTuple(args, "s", &input))
 		return NULL;
 
@@ -29,10 +33,23 @@ py3k_locale_problem_ext_convert(PyObject *self, PyObject *args) {
 }
 
 static
+PyObject *
+py3k_locale_problem_ext_print_locale(PyObject *self, PyObject *args) {
+	char *c = setlocale(LC_ALL, NULL);
+	printf("%s\n", c);
+
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+static
 PyMethodDef py3k_locale_problem_ext_methods[] = {
 
 	{"convert",  py3k_locale_problem_ext_convert, METH_VARARGS,
 	 "converts a string to a float."},
+
+	{"print_locale",  py3k_locale_problem_ext_print_locale, METH_VARARGS,
+	 "prints the current locale."},
 
 	{NULL, NULL, 0, NULL}        /* Sentinel */
 };
